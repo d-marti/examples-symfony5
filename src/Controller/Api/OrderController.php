@@ -2,6 +2,7 @@
 
 namespace DMarti\ExamplesSymfony5\Controller\Api;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +38,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/api/orders/{orderId<\d+>}', methods: ['GET'])]
-    public function show(int $orderId): Response
+    public function show(int $orderId, LoggerInterface $logger): Response
     {
         // todo: get order from DB
         $order = [
@@ -46,6 +47,15 @@ class OrderController extends AbstractController
             'fulfilledAt' => null,
             'createdAt' => '2032-06-30 09:24:21',
         ];
+
+        /*
+        To see API logs in Web Profiler, make the request then open:
+        https://localhost:8000/_profiler
+        Click on the token next to the request, and then select "Logs" from the (left) menu.
+        */
+        $logger->info('Getting order #{orderId}', [
+            'orderId' => $orderId
+        ]);
 
         return $this->json($order);
     }

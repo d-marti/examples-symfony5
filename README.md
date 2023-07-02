@@ -168,3 +168,24 @@ To start the Symfony var dumper server, which is useful for AJAX requests, use:
 ```shell
 symfony console server:dump
 ```
+
+
+## Services, autowiring and logging
+
+To see what services are available for use, run:
+```shell
+symfony console debug:autowiring
+```
+
+You can also use a filter with it, for ex.:
+```shell
+symfony console debug:autowiring log
+```
+If you use the `LoggerInterface` logger, you will be able to see logs in the Web Profiler and also in `var/log` directory.
+
+You can then use the result to autowire the service with the given typehint (and variable name in case there are multiple instances).
+
+*Note that you could also see all private services with:*
+```shell
+symfony console debug:container
+```
