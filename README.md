@@ -117,3 +117,15 @@ Install twig bundle with:
 ```shell
 composer require twig
 ```
+
+
+## Twig HTML templates
+
+Create templates in the new `templates` directory (or config a new one).
+
+Use `$this->render('template.html.twig')` in Controllers to render a page using the given template.
+
+See [Twig documentation](https://twig.symfony.com/doc/), or use the following command to see all available twig functions, filters and tests:
+```shell
+symfony console debug:twig
+```
