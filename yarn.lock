@@ -2770,6 +2770,11 @@ jest-worker@^29.1.2:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
+jquery@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.0.tgz#fe2c01a05da500709006d8790fe21c8a39d75612"
+  integrity sha512-umpJ0/k8X0MvD1ds0P9SfowREz2LenHsQaxSohMZ5OMNEU2r0tf8pdeEFTHMFxWVxKNyU9rTtK3CWzUCTKJUeQ==
+
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -3859,6 +3864,11 @@ signal-exit@^3.0.3:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
+
+simpledotcss@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/simpledotcss/-/simpledotcss-2.2.1.tgz#7151371401821b33383a533b0a077fc8cf11959b"
+  integrity sha512-bEuU6rLmL8Lu6gBcn6HlslEEoHk4v8ldW3K4DOCT33e4L0Y3ExMT9DuITQ7KhRBKlKFDJ3DgAwxoGrN+0B9Jiw==
 
 sockjs@^0.3.24:
   version "0.3.24"

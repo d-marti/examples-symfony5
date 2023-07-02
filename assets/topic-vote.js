@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+
 var container = jQuery('.js-topic-vote-arrows');
 container.find('a').on('click', function(e) {
     e.preventDefault();

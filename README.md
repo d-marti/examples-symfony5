@@ -224,3 +224,28 @@ To watch the build, use:
 ```shell
 yarn watch
 ```
+
+
+## Webpack Encore usage basics
+
+Instead of using CDNs we can add packages, like `jQuery` and `simple.css`, using:
+```shell
+yarn add jquery --dev
+yarn add simpledotcss --dev
+```
+
+Encore will minify the assets for us, amongst other things, so you can import not minified versions of assets.
+
+CSS files can be imported in `assets/styles/app.css` by adding an `import` statement with full-path syntax like: `./path/style.css`, or from the `node_modules` directory with "~", for ex:
+```css
+@import "~bootstrap";
+@import "~some-module/dist/mod.css";
+```
+
+JS files can be imported by adding an `import` statement in `assets/app.js`, for example:
+```js
+import jQuery from 'jquery';
+import './topic-vote.js';
+```
+
+Both `app.css` and `app.js` can be renamed. Just change `./styles/app.css` in `app.js`, and `.addEntry('app', './assets/app.js')` in `webpack.config.js` to the new filenames.
