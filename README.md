@@ -109,3 +109,11 @@ To check if a URI (with params) matches a route, use for ex.:
 ```shell
 symfony console router:match /api/orders/1 --method=GET
 ```
+
+
+## Twig installation
+
+Install twig bundle with:
+```shell
+composer require twig
+```
