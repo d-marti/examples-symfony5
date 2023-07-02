@@ -152,3 +152,19 @@ You can install extra functionality for Twig, for ex. a markdown converter:
 ```shell
 composer require twig/markdown-extra league/commonmark
 ```
+
+
+## Debug tools installation
+
+Install the Symfony Web Profiler and logging (monolog) with:
+```shell
+composer require debug
+```
+
+Access the Web Profiler from the new bar at the bottom of any page, or (for API requests) from:
+<https://localhost:8000/_profiler/>
+
+To start the Symfony var dumper server, which is useful for AJAX requests, use:
+```shell
+symfony console server:dump
+```
