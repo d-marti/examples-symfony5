@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Docs{% endblock %}
+
+{% block body %}
+    <pre>
+        {{ readmeMd|raw }}
+    </pre>
+{% endblock %}

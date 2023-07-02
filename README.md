@@ -129,3 +129,18 @@ See [Twig documentation](https://twig.symfony.com/doc/), or use the following co
 ```shell
 symfony console debug:twig
 ```
+
+
+## Public assets and generated URLs
+
+You can install the Symfony asset component to manage the URLs of your CSS, JS and image files:
+```shell
+composer require asset
+```
+
+Name your routes for which you want to be able to get their URIs using the "path" function (you can also pass it parameters if using slugs). Works inside of twig templates too.
+
+To view all your routes (and the Web profiler's on a dev env) use:
+```shell
+symfony console debug:router
+```
