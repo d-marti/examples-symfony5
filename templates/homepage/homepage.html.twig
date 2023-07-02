@@ -12,9 +12,19 @@
             {% for index, topic in topics %}
             <li>
                 {{ index + 1}}) <b>{{ topic.title }}</b> ({{ topic.updatedAt|default(date('today'))|date('Y/m/d') }})
+                <div class="topic-vote-arrows js-topic-vote-arrows" data-topic="{{ topic.slug }}">
+                    <a class="topic-vote-down" href="#" data-direction="down">▼</a>
+                    <a class="topic-vote-up" href="#" data-direction="up">▲</a>
+                    <span class="js-topic-vote-total">{{ topic.votes }}</span>
+                </div>
             </li>
             {% endfor %}
         </ul>
 
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/topic-vote.js') }}" defer></script>
 {% endblock %}

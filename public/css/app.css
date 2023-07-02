@@ -1,3 +1,9 @@
 body {
     background-color: darkslategray;
 }
+
+.topic-vote-arrows a {
+    float: left;
+    margin-right: 5px;
+    text-decoration: none !important;
+}

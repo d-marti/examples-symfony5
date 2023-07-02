@@ -189,3 +189,9 @@ You can then use the result to autowire the service with the given typehint (and
 ```shell
 symfony console debug:container
 ```
+
+## JavaScript and AJAX basics
+
+Just like with CSS assets, you can also add JS assets, just make sure to use `defer` tag since they are added to the header, to not load them till after the page loads.
+
+Depending on your app's needs, you can get it more frontend tools with bundles like [Encore](https://symfony.com/doc/current/frontend/encore), [Stimulus](https://symfony.com/bundles/StimulusBundle/) and [Turbo](https://symfony.com/bundles/ux-turbo/).
