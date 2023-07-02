@@ -195,3 +195,32 @@ symfony console debug:container
 Just like with CSS assets, you can also add JS assets, just make sure to use `defer` tag since they are added to the header, to not load them till after the page loads.
 
 Depending on your app's needs, you can get it more frontend tools with bundles like [Encore](https://symfony.com/doc/current/frontend/encore), [Stimulus](https://symfony.com/bundles/StimulusBundle/) and [Turbo](https://symfony.com/bundles/ux-turbo/).
+
+
+## Webpack Encore installation
+
+You will need [Node.js](https://nodejs.org) and optionally Yarn v1.22, which you can install with (don't install the latest one with corepack, as it won't work):
+```shell
+npm install --global yarn
+```
+
+Then require Encore:
+```shell
+composer require encore
+```
+
+Install with Yarn:
+```shell
+yarn install
+```
+Which on success will create the `yarn.lock` file.
+
+To create the build, use:
+```shell
+yarn build
+```
+
+To watch the build, use:
+```shell
+yarn watch
+```
