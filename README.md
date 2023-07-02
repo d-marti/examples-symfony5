@@ -61,3 +61,17 @@ If that doesn't work, you can install `mkcert` in Windows, copy both `~/.symfony
 You should also add a `README.md` and `LICENSE` file, then commit and push everything with `git`.
 
 You are now ready to expand on the Symfony skeleton and add bundles as you need them.
+
+
+## Namespace customization
+
+Change all instances of `App` (case-sensitive) in *all* files (not just .php) with your own namespace, which usually looks like:
+>`Author\ProjectName`
+
+Make sure to also change it in `./config/preload.php`, but replace any "\" with "_", for example:
+>`Author_ProjectName_KernelProdContainer.preload.php`
+
+Then run:
+```shell
+composer install
+```
