@@ -144,3 +144,11 @@ To view all your routes (and the Web profiler's on a dev env) use:
 ```shell
 symfony console debug:router
 ```
+
+
+#Twig extras
+
+You can install extra functionality for Twig, for ex. a markdown converter:
+```shell
+composer require twig/markdown-extra league/commonmark
+```

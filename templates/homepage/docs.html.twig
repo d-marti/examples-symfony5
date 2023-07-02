@@ -3,7 +3,5 @@
 {% block title %}{{ parent() }} - Docs{% endblock %}
 
 {% block body %}
-    <pre>
-        {{ readmeMd|raw }}
-    </pre>
+    {{ readmeMd|markdown_to_html }}
 {% endblock %}
