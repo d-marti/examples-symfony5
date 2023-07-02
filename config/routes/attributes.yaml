@@ -1,0 +1,8 @@
+controllers:
+    resource: ../../src/Controller/
+    # annotation works for attributes as well
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation

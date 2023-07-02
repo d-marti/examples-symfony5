@@ -75,3 +75,37 @@ Then run:
 ```shell
 composer install
 ```
+
+
+## Routes configuration using attributes (or annotations)
+
+Instead of defining routes in the `config\routes.yaml` file, you can define them using attributes (or annotations) in Controllers.
+
+Create a `routes\attributes.yaml` config file with (note that the config filename does not matter):
+```yaml
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation
+```
+In Symfony 5 the `"type: annotation"` works for attributes too. See [Symfony 5.4 docs](https://symfony.com/doc/5.4/routing.html) for more info.
+
+*Note that in Symfony 6 the config file is slightly different, so check out the [Symfony 6 docs](https://symfony.com/doc/6.2/routing.html) for that.*
+
+You might want to run `composer install` again, or simply clear the cache with:
+```shell
+symfony console cache:clear
+```
+
+
+## API basics
+
+In your Controller functions (actions) you can return different types of responses (like JSON, or HTML), configure allowed methods for your routes, and also add regex validation on your route params. To get access to some shortcuts for HTTP-related features, make your Controllers extend `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
+
+To check if a URI (with params) matches a route, use for ex.:
+```shell
+symfony console router:match /api/orders/1 --method=GET
+```
