@@ -298,3 +298,63 @@ To clear only the app's cached items, use:
 ```shell
 symfony console cache:pool:clear cache.app
 ```
+
+## Configuration basics
+
+To see all configurable bundles, use:
+```shell
+symfony console config:dump
+```
+ 
+If you want to configure any bundle and its services, besides looking at the symfony docs for it, you can run a command to see what options are available:
+```shell
+symfony console config:dump BundleName
+```
+
+You can further fitler that by a config option, for example `cache` from the `FrameworkBundle`:
+```shell
+symfony console config:dump FrameworkBundle cache
+```
+Or use the extension alias:
+```shell
+symfony console config:dump framework cache
+```
+
+To see all currently configured values, use `debug:config` instead of `config:dump`, for example:
+```shell
+symfony console debug:config framework cache
+```
+
+
+## Configuration per environment
+
+You can create configurations that are different per environment (`APP_ENV` in `.env` files, default is `dev`).
+
+Just put the config files in a subfolder matching the environment's name, for example:
+* `config/packages/dev`
+* `config/routes/prod`
+
+The `services.yaml` config can be overwritten by creating a file per env, for example:
+* `config/services_dev.yaml`
+
+Of course you can always use the `when@env` keyword inside the main config too, instead of creating other files.
+
+Note that you don't need to put all values in per-env configs, just the ones you want to overwrite.
+
+On `prod` environment certain features (`require-dev` packages from `composer.json`) are not included, like the Web Profiler.
+
+The YAML and Twig files are cached on all envs but on `dev` envs they are auto-cleared if Symfony detects a change. On `prod` they should be manually cleared when deploying:
+```shell
+php bin/console cache:clear
+php bin/console cache:warmup
+```
+
+
+## Configuration parameters
+
+To see all container parameters, use:
+```shell
+symfony console debug:container --parameters
+```
+
+Global parameters can be configured under `parameters` key in `services.yaml`.
