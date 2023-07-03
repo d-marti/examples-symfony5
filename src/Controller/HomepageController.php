@@ -2,25 +2,17 @@
 
 namespace DMarti\ExamplesSymfony5\Controller;
 
-use Psr\Cache\CacheItemInterface;
+use DMarti\ExamplesSymfony5\Service\TopicService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function homepage(HttpClientInterface $httpClient, CacheInterface $cache): Response
+    public function homepage(TopicService $topicService): Response
     {
-        $topics = $cache->get('topics-default', function (CacheItemInterface $cacheItem) use ($httpClient): array {
-            $cacheItem->expiresAfter(5); // if unset, the cached item never expires until the cache is cleared manually
-            $response = $httpClient->request(Request::METHOD_GET, 'https://localhost:8000/topics.json');
-
-            return $response->toArray();
-        });
+        $topics = $topicService->getTopics();
 
         return $this->render('homepage/homepage.html.twig', [
             'topics' => $topics

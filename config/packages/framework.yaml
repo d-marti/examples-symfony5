@@ -25,6 +25,20 @@ framework:
             timeout: 5
             verify_host: true
             verify_peer: true
+        scoped_clients:
+            topicHttpClient:
+                base_uri: https://raw.githubusercontent.com
+                headers:
+                    Accept: 'application/vnd.github.v3+json'
+                    Authorization: 'Token %env(GITHUB_TOKEN_TOPIC)%'
+
+when@dev:
+    framework:
+        http_client:
+            scoped_clients:
+                topicHttpClient:
+                    headers:
+                        Authorization:
 
 when@test:
     framework:

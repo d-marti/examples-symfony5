@@ -358,3 +358,38 @@ symfony console debug:container --parameters
 ```
 
 Global parameters can be configured under `parameters` key in `services.yaml`.
+
+
+## Services and dependency injection
+
+You can create services anywhere in the `"src"` directory and thanks to `services.yaml` they will be autoloaded, autowired and autoconfigured.
+
+To add a dependency for a service, for example `HttpClientInterface`, add it in its constructor. Autowiring will do the rest, as long as you typehint it correctly (and use the correct parameter name in case of named autowiring).
+
+
+## Scoped HTTP Clients
+
+You can configure a different set of options per scoped (by host URI) Http Clients in `framework.yaml` config file. See [Symfony HTTP Client docs](https://symfony.com/doc/5.4/http_client.html#scoping-client) for more info.
+
+
+## Environment variables and secrets
+
+You can see all environment variables configured in `.env` files with:
+```shell
+symfony console debug:dotenv
+```
+You can pass it `--env=ENV` argument to show them for "ENV" environment, in case you have multiple files.
+
+If you have sensitive variables, like passwords, keys and so on, you can set them as secrets instead of adding them to `.env.local` files. They will be automatically used, but note that variables defined in `.env` overwrite them, so make sure to remove them from those files.
+
+To set a secret, for "ENV" environment, use:
+```shell
+symfony console secrets:set VARIABLE_NAME --env=ENV
+```
+
+To list secrets of "ENV" environment, and also reveal them, use:
+```shell
+symfony console secrets:list --reveal --env=ENV
+```
+
+Note that the `prod.decrypt.private.php` key is ignored by git on purpose as it should not be commited. It is needed for decryption and should be added manually to any `prod` environments.
