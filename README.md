@@ -249,3 +249,12 @@ import './topic-vote.js';
 ```
 
 Both `app.css` and `app.js` can be renamed. Just change `./styles/app.css` in `app.js`, and `.addEntry('app', './assets/app.js')` in `webpack.config.js` to the new filenames.
+
+
+## HTTP Client installation
+
+Install Symfony HTTP Client with:
+```shell
+composer require symfony/http-client -W
+```
+Note that this service will be loaded by the FrameworkBundle.
