@@ -284,3 +284,17 @@ Note that this service will be loaded by the FrameworkBundle.
 Autowire with `Symfony\Contracts\HttpClient\HttpClientInterface` typehint and use the `request` method to make a request.
 
 See [Symfony HTTP Client docs](https://symfony.com/doc/5.4/http_client.html) for more info.
+
+
+## Caching basics
+
+The `Cache` component is part of FrameworkBundle. It can be configured to use Redis or other adapters, by default it uses the filesystem.
+
+Autowire it with `Symfony\Contracts\Cache\CacheInterface` typehint and use `get` method to get a cached item or, if it doesn't exist or is expired, do the work (maybe do a request or query the DB, etc) to get the item and save it to cache.
+
+When using caching, you will notice a new icon in the Web Profiler toolbar and clicking it will open the "Cache" panel.
+
+To clear only the app's cached items, use:
+```shell
+symfony console cache:pool:clear cache.app
+```
