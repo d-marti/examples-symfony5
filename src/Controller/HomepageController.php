@@ -16,7 +16,7 @@ class HomepageController extends AbstractController
     public function homepage(HttpClientInterface $httpClient, CacheInterface $cache): Response
     {
         $topics = $cache->get('topics-default', function (CacheItemInterface $cacheItem) use ($httpClient): array {
-            $cacheItem->expiresAfter(5); // if not set, the cached item never expires, until the cache is cleared manually
+            $cacheItem->expiresAfter(5); // if unset, the cached item never expires until the cache is cleared manually
             $response = $httpClient->request(Request::METHOD_GET, 'https://localhost:8000/topics.json');
 
             return $response->toArray();
