@@ -124,7 +124,7 @@ symfony console cache:clear
 
 In your Controller functions (actions) you can return different types of responses (like JSON, or HTML), configure allowed methods for your routes, and also add regex validation on your route params. To get access to some shortcuts for HTTP-related features, make your Controllers extend `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
 
-To check if a URI (with params) matches a route, use for ex.:
+To check if a URI (with params) matches a route, use for example:
 ```shell
 symfony console router:match /api/orders/1 --method=GET
 ```
@@ -167,7 +167,7 @@ symfony console debug:router
 
 #Twig extras
 
-You can install extra functionality for Twig, for ex. a markdown converter:
+You can install extra functionality for Twig, for example a markdown converter:
 ```shell
 composer require twig/markdown-extra league/commonmark
 ```
@@ -196,7 +196,7 @@ To see what services are available for use, run:
 symfony console debug:autowiring
 ```
 
-You can also use a filter with it, for ex.:
+You can also use a filter with it, for example:
 ```shell
 symfony console debug:autowiring log
 ```
@@ -255,7 +255,7 @@ yarn add simpledotcss --dev
 
 Encore will minify the assets for us, amongst other things, so you can import not minified versions of assets.
 
-CSS files can be imported in `assets/styles/app.css` by adding an `import` statement with full-path syntax like: `./path/style.css`, or from the `node_modules` directory with "~", for ex:
+CSS files can be imported in `assets/styles/app.css` by adding an `import` statement with full-path syntax like: `./path/style.css`, or from the `node_modules` directory with "~", for example:
 ```css
 @import "~bootstrap";
 @import "~some-module/dist/mod.css";
