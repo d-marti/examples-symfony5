@@ -406,3 +406,14 @@ You will get a set of new console commands with which you can make things like C
 ```shell
 symfony console make:
 ```
+
+
+## Command creation
+
+Create a command with:
+```shell
+symfony console make:command
+```
+For command name you can give it the full namespace like: `\DMarti\ExamplesSymfony5\Command\CreateMagicNumberCommand`
+
+You can make them interractive, give them arguments and options, run them with different verbosity modes, format the output, and much more.
