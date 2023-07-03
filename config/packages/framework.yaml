@@ -17,6 +17,15 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        default_options:
+            headers: { 'User-Agent': 'Symfony HttpClient/Curl %env(APP_ID)%[%kernel.environment%]' }
+            max_duration: 30
+            max_redirects: 7
+            timeout: 5
+            verify_host: true
+            verify_peer: true
+
 when@test:
     framework:
         test: true

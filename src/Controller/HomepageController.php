@@ -4,40 +4,18 @@ namespace DMarti\ExamplesSymfony5\Controller;
 
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function homepage(): Response
+    public function homepage(HttpClientInterface $httpClient): Response
     {
-        $topics = [
-            [
-                'title' => 'Basic setup',
-                'slug' => 'basic-setup',
-                'updatedAt' => (new DateTimeImmutable('2023-06-27')),
-                'votes' => rand(1, 100),
-            ],
-            [
-                'title' => 'Routing',
-                'slug' => 'routing',
-                'updatedAt' => (new DateTimeImmutable('2023-06-28')),
-                'votes' => rand(1, 50),
-            ],
-            [
-                'title' => 'API setup',
-                'slug' => 'api-setup',
-                'updatedAt' => (new DateTimeImmutable('2023-06-29')),
-                'votes' => rand(-50, 1),
-            ],
-            [
-                'title' => 'Templating',
-                'slug' => 'templating',
-                'updatedAt' => null,
-                'votes' => 0,
-            ],
-        ];
+        $response = $httpClient->request(Request::METHOD_GET, 'https://localhost:8000/topics.json');
+        $topics = $response->toArray();
 
         return $this->render('homepage/homepage.html.twig', [
             'topics' => $topics

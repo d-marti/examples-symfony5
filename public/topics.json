@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Basic setup",
+        "slug": "basic-setup",
+        "updatedAt": "2023-06-27",
+        "votes": 41
+    },
+    {
+        "title": "Routing",
+        "slug": "routing",
+        "updatedAt": "2023-06-28",
+        "votes": 8
+    },
+    {
+        "title": "API setup",
+        "slug": "api-setup",
+        "updatedAt": "2023-06-29",
+        "votes": -26
+    },
+    {
+        "title": "Templating",
+        "slug": "templating",
+        "updatedAt": null,
+        "votes": 0
+    }
+]

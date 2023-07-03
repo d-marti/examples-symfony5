@@ -1,3 +1,22 @@
+# Installation
+
+If you do not wish to follow the step by step examples, install this app with:
+```shell
+composer install
+yarn install
+yarn build
+```
+
+You can then access it through a web server on your localhost.
+
+You can use Symfony web server (if you installed the `symfony` binary):
+```shell
+symfony serve -d
+```
+And access it at:
+`https://localhost:8000`
+
+
 # Examples using Symfony 5
 
 ## Project creation, PHP version and server setup
@@ -258,3 +277,10 @@ Install Symfony HTTP Client with:
 composer require symfony/http-client -W
 ```
 Note that this service will be loaded by the FrameworkBundle.
+
+
+## HTTP Client usage basics
+
+Autowire with `Symfony\Contracts\HttpClient\HttpClientInterface` typehint and use the `request` method to make a request.
+
+See [Symfony HTTP Client docs](https://symfony.com/doc/5.4/http_client.html) for more info.
