@@ -393,3 +393,16 @@ symfony console secrets:list --reveal --env=ENV
 ```
 
 Note that the `prod.decrypt.private.php` key is ignored by git on purpose as it should not be commited. It is needed for decryption and should be added manually to any `prod` environments.
+
+
+## Maker bundle installation
+
+Install with:
+```shell
+composer require maker --dev
+```
+
+You will get a set of new console commands with which you can make things like Commands and Entities:
+```shell
+symfony console make:
+```
