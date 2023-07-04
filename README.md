@@ -595,7 +595,7 @@ Then modify `stof_doctrine_extensions.yaml` config file to include all extension
 Read more about all its features in the [Doctrine Extensions docs](https://github.com/doctrine-extensions/DoctrineExtensions#readme).
 
 
-### Doctrine fixtures bundle installation
+### Doctrine fixtures bundle
 
 Fixtures are used to load a "fake" set of data into a database that can then be used for testing or to help give you some interesting data while you're developing your application. Read more in the [Doctrine Fixtures docs](https://symfony.com/bundles/DoctrineFixturesBundle/current/index.html).
 
@@ -609,4 +609,14 @@ See `src/DataFixtures/AppFixtures.php` for some example.
 To load the fixtures (and also empty the database), use:
 ```shell
 symfony console doctrine:fixtures:load
+```
+
+
+### Foundry and fixtures
+
+Foundry helps create entity objects to be used with our fixtures.
+
+To install:
+```shell
+composer require --dev zenstruck/foundry
 ```
