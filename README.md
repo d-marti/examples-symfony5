@@ -620,3 +620,8 @@ To install:
 ```shell
 composer require --dev zenstruck/foundry
 ```
+
+You will be able to create factories for entities with:
+```shell
+symfony console make:factory
+```

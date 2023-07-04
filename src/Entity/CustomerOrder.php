@@ -2,7 +2,7 @@
 
 namespace DMarti\ExamplesSymfony5\Entity;
 
-use DateTimeImmutable;
+use DateTime;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,7 +35,7 @@ class CustomerOrder
     private int $statusFulfillment = self::STATUS_FULFILLMENT_PENDING;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $fulfilledAt = null;
+    private ?DateTime $fulfilledAt = null;
 
     public function getId(): ?int
     {
@@ -59,12 +59,12 @@ class CustomerOrder
         return $this;
     }
 
-    public function getFulfilledAt(): ?DateTimeImmutable
+    public function getFulfilledAt(): ?DateTime
     {
         return $this->fulfilledAt;
     }
 
-    public function setFulfilledAt(?DateTimeImmutable $fulfilledAt): static
+    public function setFulfilledAt(?DateTime $fulfilledAt): static
     {
         $this->fulfilledAt = $fulfilledAt;
 
