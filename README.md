@@ -603,3 +603,10 @@ Install with:
 ```shell
 composer require --dev orm-fixtures
 ```
+
+See `src/DataFixtures/AppFixtures.php` for some example.
+
+To load the fixtures (and also empty the database), use:
+```shell
+symfony console doctrine:fixtures:load
+```

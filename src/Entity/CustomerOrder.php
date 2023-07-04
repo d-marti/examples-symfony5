@@ -18,14 +18,11 @@ class CustomerOrder
     /** @var int */
     public const STATUS_FULFILLMENT_PACKED = 2;
     /** @var int */
-    public const STATUS_FULFILLMENT_DELIVERED = 3;
-    /** @var int */
-    public const STATUS_FULFILLMENT_CANCELLED = 4;
+    public const STATUS_FULFILLMENT_CANCELLED = 3;
     /** @var array */
     public const STATUS_FULFILLMENT_TEXTS = [
         self::STATUS_FULFILLMENT_PENDING => 'Pending',
         self::STATUS_FULFILLMENT_PACKED => 'Packed',
-        self::STATUS_FULFILLMENT_DELIVERED => 'Delivered',
         self::STATUS_FULFILLMENT_CANCELLED => 'Cancelled',
     ];
 
