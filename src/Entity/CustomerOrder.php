@@ -6,10 +6,13 @@ use DateTimeImmutable;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: CustomerOrderRepository::class)]
 class CustomerOrder
 {
+    use TimestampableEntity;
+
     /** @var int */
     public const STATUS_FULFILLMENT_PENDING = 1;
     /** @var int */
@@ -36,14 +39,6 @@ class CustomerOrder
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $fulfilledAt = null;
-
-    #[ORM\Column]
-    private DateTimeImmutable $createdAt;
-
-    public function __construct()
-    {
-        $this->createdAt = new DateTimeImmutable();
-    }
 
     public function getId(): ?int
     {
@@ -79,18 +74,6 @@ class CustomerOrder
         return $this;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function toArray(): array
     {
         return [
@@ -99,6 +82,7 @@ class CustomerOrder
             'statusFulfillmentText' => $this->getStatusFulfillmentText(),
             'fulfilledAt' => ($this->fulfilledAt ? $this->fulfilledAt->format('Y-m-d H:i:s') : null),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
         ];
     }
 }

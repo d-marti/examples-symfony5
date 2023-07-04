@@ -579,3 +579,17 @@ Note that you can also make queries with a doctrine command:
 ```shell
 symfony console doctrine:query:sql 'SELECT * FROM `customer_order`'
 ```
+
+
+### Doctrine extensions bundle installation
+
+With this bundle you gain access to some extra features like Timestampable and Sluggable Entities.
+
+Install it with:
+```shell
+composer require stof/doctrine-extensions-bundle
+```
+
+Then modify `stof_doctrine_extensions.yaml` config file to include all extension you need.
+
+Read more about all its features in the [Doctrine Extensions docs](https://github.com/doctrine-extensions/DoctrineExtensions#readme).
