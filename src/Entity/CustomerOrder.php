@@ -18,6 +18,13 @@ class CustomerOrder
     public const STATUS_FULFILLMENT_DELIVERED = 3;
     /** @var int */
     public const STATUS_FULFILLMENT_CANCELLED = 4;
+    /** @var array */
+    public const STATUS_FULFILLMENT_TEXTS = [
+        self::STATUS_FULFILLMENT_PENDING => 'Pending',
+        self::STATUS_FULFILLMENT_PACKED => 'Packed',
+        self::STATUS_FULFILLMENT_DELIVERED => 'Delivered',
+        self::STATUS_FULFILLMENT_CANCELLED => 'Cancelled',
+    ];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,6 +53,11 @@ class CustomerOrder
     public function getStatusFulfillment(): int
     {
         return $this->statusFulfillment;
+    }
+
+    public function getStatusFulfillmentText(): string
+    {
+        return self::STATUS_FULFILLMENT_TEXTS[$this->statusFulfillment] ?? '';
     }
 
     public function setStatusFulfillment(int $statusFulfillment): static
@@ -77,5 +89,16 @@ class CustomerOrder
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'statusFulfillment' => $this->statusFulfillment,
+            'statusFulfillmentText' => $this->getStatusFulfillmentText(),
+            'fulfilledAt' => ($this->fulfilledAt ? $this->fulfilledAt->format('Y-m-d H:i:s') : null),
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+        ];
     }
 }

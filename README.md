@@ -569,3 +569,13 @@ You can then autowire this repository in your services and controllers, or get i
 /** @var EntityNameRepository $repository */
 $repository = $entityManager->getRepository(EntityName::class);
 ```
+
+
+### Basic operations with Entities and Repositories
+
+See examples in this commit and read the Symfony docs.
+
+Note that you can also make queries with a doctrine command:
+```shell
+symfony console doctrine:query:sql 'SELECT * FROM `customer_order`'
+```
