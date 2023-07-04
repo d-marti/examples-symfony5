@@ -16,6 +16,17 @@ symfony serve -d
 And access it at:
 `https://localhost:8000`
 
+You will need a DBMS as well, or if you have Docker, simply run:
+```shell
+docker-compose up -d
+```
+Otherwise, make sure to configure the `DATABASE_URL` in `.env.local` file.
+
+Finally, import migrations to your DB with:
+```shell
+symfony console doctrine:migrations:migrate
+```
+
 
 # Examples using Symfony 5
 
@@ -481,3 +492,80 @@ symfony var:export --multiline
 You will notice the DATABASE_URL is configured correctly and contains the random port exposed to our machine by Docker.
 
 In Web Profiler you can also see if you hover over the `Server` icon that the `Env Vars` are "from Docker".
+
+
+### Creating and updating Entities, Repositories and Migrations
+
+First create an `Entity` with:
+```shell
+symfony console make:entity
+```
+
+It will also create the corresponding `Repository`.
+
+Then create the migrations for it with:
+```shell
+symfony console make:migration
+```
+*Note that for this to work you need both Docker (or your DBMS) and (Symfony) server running for this app.*
+
+If you ever need to add additional columns, follow the same steps. If you need to remove a column, remove it from the Entity and then run `make:migration`.
+
+You can then migrate your migrations to the DB with:
+```shell
+symfony console doctrine:migrations:migrate
+```
+
+If you want to revert to a previous migration, you can use:
+```shell
+symfony console doctrine:migrations:migrate "DoctrineMigrations\Version20230704071109"
+```
+*Note that this does not change (remove things from) your Entities.*
+
+If you make subtle changes to your Entities you can check if you need to make a migration or not with:
+```shell
+symfony console doctrine:schema:update --dump-sql
+```
+
+
+### Importing existing tables to Entities
+
+For legacy projects, to import an entity with annotations (there's no option for attributes) from an existing table, use (just replace `App` with your namespace root):
+```shell
+symfony console doctrine:mapping:import --force "App\Entity" annotation --path=src/Entity --filter="EntityName"
+```
+The optional `filter` makes it import only tables partially matching the given PascalCase naming.
+
+To generate the getters and setters for all entities, without overwriting existing functions, use:
+```shell
+symfony console make:entity --regenerate "App\Entity"
+```
+To generate only a specific entity's getters and setters, without overwriting existing ones, use:
+```shell
+symfony console make:entity --regenerate "App\Entity\EntityName"
+```
+
+
+### Create a custom repository for an existing entity
+
+You can add a custom repository for the entity too, for any additional querying you might need, especially when dealing with multiple results. All you have to do, is modify the Entity, add a "use" statement for the Repo class (which doesn't exist yet, so autocomplete won't work), and change its  "@ORM\Entity" annotation to have the "repositoryClass" config, for example like so:
+```php
+use App\Repository\EntityName;
+
+/**
+ * @ORM\Entity(repositoryClass=EntityNameRepository::class)
+ * ...
+ */
+```
+
+Then run (again):
+```shell
+symfony console make:entity --regenerate App\Entity\EntityName
+```
+It will create a template repository which you can modify to your needs.
+
+You can then autowire this repository in your services and controllers, or get it with the entity manager, for example:
+```php
+/** @var EntityNameRepository $repository */
+$repository = $entityManager->getRepository(EntityName::class);
+```
