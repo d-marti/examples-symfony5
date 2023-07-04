@@ -417,3 +417,67 @@ symfony console make:command
 For command name you can give it the full namespace like: `\DMarti\ExamplesSymfony5\Command\CreateMagicNumberCommand`
 
 You can make them interractive, give them arguments and options, run them with different verbosity modes, format the output, and much more.
+
+
+## Doctrine
+
+### Installation
+
+Install Doctrine (ORM pack) with:
+```shell
+composer require doctrine
+```
+
+You will be asked if you would like to include Docker configuration from recipes, for now, say "no". It would have created `docker-compose.yml` and `docker-compose.override.yml` files with Postgres default setup for a Docker database container. But, you can create these docker compose files for a specific DBMS with:
+```shell
+symfony console make:docker:database
+```
+Take note of what server version you use. Whether you use Docker or not, you will need to configure the `server_version` in `config/packages/doctrine.yaml` file, so that Doctrine knows what features are available for usage.
+
+To see all new console commands added by Doctrine use:
+```shell
+symfony console doctrine:
+```
+
+You will notice 3 new directories:
+* `src/Entity` - Tables from the database will be represented as Entity classes, so stop thinking about tables and start thinking about working with **objects** instead. To create an Entity use `symfony console make:entity` (this will create the Repository as well).
+* `src/Repository` - Used to query for objects and comes with a bunch of default function such as `find`.
+* `migrations` - To create and alter database tables / schema. Use `symfony console make:migration` to automatically create the files based on existing Entities. Or use `symfony console doctrine:migrations:generate` to create a blank one which you can fill out.
+
+
+### DBMS with Docker
+
+You need to have Docker installed to be able to start Docker containers that you have defined in `docker-compose.yaml`.
+
+You can build and start all containers with:
+```shell
+docker-compose up -d
+```
+
+You can stop all containers with:
+```shell
+docker-compose stop
+```
+
+Or even stop and destroy them (and all data they stored) with:
+```shell
+docker-compose down
+```
+
+To see all running containers use:
+```shell
+docker-compose ps
+```
+
+You can then use the container's name to access it, for ex:
+```shell
+docker-compose exec database mariadb --user root --password
+```
+
+Restart the symfony server to see the changes. You can run a command to see all env variables the server uses (detected) with:
+```shell
+symfony var:export --multiline
+```
+You will notice the DATABASE_URL is configured correctly and contains the random port exposed to our machine by Docker.
+
+In Web Profiler you can also see if you hover over the `Server` icon that the `Env Vars` are "from Docker".
