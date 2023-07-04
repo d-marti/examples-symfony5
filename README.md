@@ -560,7 +560,7 @@ use App\Repository\EntityName;
 
 Then run (again):
 ```shell
-symfony console make:entity --regenerate App\Entity\EntityName
+symfony console make:entity --regenerate "App\Entity\EntityName"
 ```
 It will create a template repository which you can modify to your needs.
 
