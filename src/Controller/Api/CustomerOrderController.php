@@ -7,13 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrderController extends AbstractController
+class CustomerOrderController extends AbstractController
 {
-    #[Route('/api/orders', methods: ['GET'])]
+    #[Route('/api/customerOrders', methods: ['GET'])]
     public function list(): Response
     {
-        // todo: get orders from DB
-        $orders = [
+        // todo: get customerOrders from DB
+        $customerOrders = [
             [
                 'id' => 1234,
                 'statusFulfillmentText' => 'Open',
@@ -34,10 +34,10 @@ class OrderController extends AbstractController
             ],
         ];
 
-        return $this->json($orders);
+        return $this->json($customerOrders);
     }
 
-    #[Route('/api/orders/{orderId<\d+>}', methods: ['GET'])]
+    #[Route('/api/customerOrders/{orderId<\d+>}', methods: ['GET'])]
     public function show(int $orderId, LoggerInterface $logger): Response
     {
         // todo: get order from DB
@@ -60,7 +60,7 @@ class OrderController extends AbstractController
         return $this->json($order);
     }
 
-    #[Route('/api/orders/{orderId<\d+>}', methods: ['PUT'])]
+    #[Route('/api/customerOrders/{orderId<\d+>}', methods: ['PUT'])]
     public function update(int $orderId): Response
     {
         // todo: find order then update it in the DB
