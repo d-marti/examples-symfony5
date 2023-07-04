@@ -76,6 +76,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "reset-dev-db": [
+            "symfony console doctrine:database:drop --env=dev --force --if-exists",
+            "symfony console doctrine:database:create --env=dev -n",
+            "symfony console doctrine:migrations:migrate --env=dev -n",
+            "symfony console doctrine:fixtures:load --env=dev -n"
         ]
     },
     "conflict": {

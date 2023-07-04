@@ -625,3 +625,12 @@ You will be able to create factories for entities with:
 ```shell
 symfony console make:factory
 ```
+
+
+### Doctrine Entity relations with Collections, using relations in Fixtures and Enum types
+
+When creating an entity you can set the type to "relation". This will create foreign key relations between your selected entities.
+
+You can also add them manually by following the examples found here, between `CustomerOrder`, `CustomerOrderProduct` and `Product` entities.
+
+In a first example I show how you can use "filter" with Collections to get only not packed products. But this is wasteful since Doctrine queries all results from customer order product matching the order ID, loops over them and then applies the filter. There is a way to instead query directly with a specific clause (for ex. `quantityPacked < quantityOrdered`>) using Criterias.

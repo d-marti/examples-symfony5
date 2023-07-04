@@ -2,6 +2,8 @@
 
 namespace DMarti\ExamplesSymfony5\Factory;
 
+use DateTime;
+use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Entity\CustomerOrder;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
 use Zenstruck\Foundry\ModelFactory;
@@ -32,25 +34,45 @@ final class CustomerOrderFactory extends ModelFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
-     * @todo inject services if required
+     * Inject services if required
      */
     public function __construct()
     {
         parent::__construct();
     }
 
+    public function fulfilled(): self
+    {
+        $this->addState([
+            'statusFulfillment' => CustomerOrderStatusFulfillment::Packed,
+            'fulfilledAt' => new DateTime(),
+        ]);
+
+        return $this;
+    }
+
+    public function unfulfilled(): self
+    {
+        $this->addState([
+            'statusFulfillment' => CustomerOrderStatusFulfillment::Pending,
+            'fulfilledAt' => null,
+        ]);
+
+        return $this;
+    }
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
      */
     protected function getDefaults(): array
     {
-        $statusFulfillment = self::faker()->numberBetween(1, count(CustomerOrder::STATUS_FULFILLMENT_TEXTS));
+        $statusFulfillment = self::faker()->randomElement(CustomerOrderStatusFulfillment::cases());
 
         return [
             'createdAt' => self::faker()->dateTimeBetween('-30 days', '-10 days'),
-            'fulfilledAt' => ($statusFulfillment === CustomerOrder::STATUS_FULFILLMENT_PACKED ? self::faker()->dateTime() : null),
+            'fulfilledAt' => ($statusFulfillment === CustomerOrderStatusFulfillment::Packed ?
+                self::faker()->dateTime() :
+                null),
             'statusFulfillment' => $statusFulfillment,
             'updatedAt' => self::faker()->dateTimeBetween('-9 days', 'now'),
         ];

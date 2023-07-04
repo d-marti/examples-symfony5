@@ -2,6 +2,7 @@
 
 namespace DMarti\ExamplesSymfony5\Controller\Api;
 
+use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Entity\CustomerOrder;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,12 +34,14 @@ class CustomerOrderController extends AbstractController
     }
 
     #[Route('/api/customerOrders/{orderId<\d+>}', methods: ['GET'])]
-    public function show(int $orderId, LoggerInterface $logger): Response
+    public function show(int $orderId, Request $request, LoggerInterface $logger): Response
     {
         $customerOrder = $this->customerOrderRepository->find($orderId);
         if (null === $customerOrder) {
             return $this->createNotFoundException();
         }
+
+        $notPacked = $request->query->get('notPacked', false);
 
         /*
         To see API logs in Web Profiler, make the request then open:
@@ -49,21 +52,27 @@ class CustomerOrderController extends AbstractController
             'orderId' => $orderId
         ]);
 
-        return $this->json(
-            $customerOrder->toArray() // there are nicer ways of doing this, but that's in a future example
-            // also, note that with Twig you don't need to convert an object to an array, since Twig is smart
-        );
+        $order = $customerOrder->toArray();
+        $order['products'] = [];
+
+        $products = ($notPacked ? $customerOrder->getNotPackedProducts() : $customerOrder->getProducts());
+        foreach ($products as $product) {
+            $order['products'][] = $product->toArray();
+        }
+
+        return $this->json($order);
     }
 
     #[Route('/api/customerOrders/{orderId<\d+>}', methods: ['PUT'])]
     public function update(int $orderId, Request $request): Response
     {
         $parameters = json_decode($request->getContent(), true);
-        if (
-            null === $parameters ||
-            !isset($parameters['statusFulfillment']) ||
-            !preg_match('/^[1-3]{1}$/', $parameters['statusFulfillment'])
-        ) {
+        if (null === $parameters || !isset($parameters['statusFulfillment'])) {
+            return new Response('', Response::HTTP_BAD_REQUEST);
+        }
+
+        $status = CustomerOrderStatusFulfillment::tryFrom($parameters['statusFulfillment']);
+        if (null === $status) {
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
@@ -72,7 +81,7 @@ class CustomerOrderController extends AbstractController
             return $this->createNotFoundException();
         }
 
-        $customerOrder->setStatusFulfillment((int) $parameters['statusFulfillment']);
+        $customerOrder->setStatusFulfillment($status);
         // $this->entityManager->persist($customerOrder); // not necessary, since we queried for the object with "find"
         $this->entityManager->flush();
 
