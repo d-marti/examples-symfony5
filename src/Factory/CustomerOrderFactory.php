@@ -3,6 +3,7 @@
 namespace DMarti\ExamplesSymfony5\Factory;
 
 use DateTime;
+use DateTimeImmutable;
 use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Entity\CustomerOrder;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
@@ -78,7 +79,7 @@ final class CustomerOrderFactory extends ModelFactory
             // ->afterPersist(function (CustomerOrder $customerOrder): void {})
             ->afterInstantiate(function (CustomerOrder $customerOrder): void {
                 if (CustomerOrderStatusFulfillment::Packed === $customerOrder->getStatusFulfillment()) {
-                    $customerOrder->setFulfilledAt(self::faker()->dateTime());
+                    $customerOrder->setFulfilledAt(DateTimeImmutable::createFromMutable(self::faker()->dateTime()));
                 }
             });
     }

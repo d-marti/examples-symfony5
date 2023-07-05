@@ -3,6 +3,7 @@
 namespace DMarti\ExamplesSymfony5\Entity;
 
 use DateTime;
+use DateTimeImmutable;
 use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderProductRepository;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
@@ -28,8 +29,8 @@ class CustomerOrder
     #[ORM\Column(type: Types::STRING, length: 10, enumType: CustomerOrderStatusFulfillment::class)]
     private CustomerOrderStatusFulfillment $statusFulfillment = CustomerOrderStatusFulfillment::Pending;
 
-    #[ORM\Column(nullable: true)]
-    private ?DateTime $fulfilledAt = null;
+    #[ORM\Column(nullable: true, type: Types::DATETIME_IMMUTABLE)]
+    private ?DateTimeImmutable $fulfilledAt = null;
 
     #[ORM\OneToMany(
         mappedBy: 'customerOrder',
@@ -66,12 +67,12 @@ class CustomerOrder
         return $this;
     }
 
-    public function getFulfilledAt(): ?DateTime
+    public function getFulfilledAt(): ?DateTimeImmutable
     {
         return $this->fulfilledAt;
     }
 
-    public function setFulfilledAt(?DateTime $fulfilledAt): static
+    public function setFulfilledAt(?DateTimeImmutable $fulfilledAt): static
     {
         $this->fulfilledAt = $fulfilledAt;
 
