@@ -4,6 +4,7 @@ namespace DMarti\ExamplesSymfony5\Entity;
 
 use DateTime;
 use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
+use DMarti\ExamplesSymfony5\Repository\CustomerOrderProductRepository;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,7 +39,10 @@ class CustomerOrder
     )]
     // You can also add an OrderBy. In this case it would order by Product ID:
     //#[ORM\OrderBy(['product' => 'ASC'])]
-    private Collection $products;
+    /**
+     * @var Collection<int, CustomerOrderProduct>|ArrayCollection<int, CustomerOrderProduct>
+     */
+    private Collection|ArrayCollection $products;
 
     public function __construct()
     {
@@ -98,9 +102,14 @@ class CustomerOrder
      */
     public function getNotPackedProducts(): Collection
     {
+        // Instead of getting all products, looping over them, and filtering out some of them,
+        // we're going to use a Criteria to add a where clause directly into our select query.
+        return $this->products->matching(CustomerOrderProductRepository::criteriaNotPacked());
+        /*
         return $this->products->filter(function (CustomerOrderProduct $product) {
-            return ($product->getQuantityPacked() < $product->getQuantityOrdered());
+            return ($product->getQuantityToPack() > 0);
         });
+        */
     }
 
     public function addCustomerOrderProduct(CustomerOrderProduct $product): static

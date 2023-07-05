@@ -15,12 +15,11 @@ class CustomerOrderProduct
     #[ORM\Column(options: ['unsigned' => true])]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(nullable: false, type: Types::SMALLINT)]
     private ?int $quantityOrdered = null;
 
-    // Adding the default for the column is not necessary, since we set it in our code.
-    #[ORM\Column(type: Types::SMALLINT, options: ['default' => 0])]
-    private int $quantityPacked = 0;
+    #[ORM\Column(nullable: false, type: Types::SMALLINT)]
+    private ?int $quantityToPack = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     // It would have been nice if these DB keywords would be defined as constants in DBAL
@@ -44,19 +43,24 @@ class CustomerOrderProduct
 
     public function setQuantityOrdered(int $quantityOrdered): static
     {
+        // only on creation, also set the quantity to pack
+        if (null === $this->quantityOrdered) {
+            $this->setQuantityToPack($quantityOrdered);
+        }
+
         $this->quantityOrdered = $quantityOrdered;
 
         return $this;
     }
 
-    public function getQuantityPacked(): int
+    public function getQuantityToPack(): int
     {
-        return $this->quantityPacked;
+        return $this->quantityToPack;
     }
 
-    public function setQuantityPacked(int $quantityPacked): static
+    public function setQuantityToPack(int $quantityToPack): static
     {
-        $this->quantityPacked = $quantityPacked;
+        $this->quantityToPack = $quantityToPack;
 
         return $this;
     }
@@ -96,7 +100,7 @@ class CustomerOrderProduct
             // clauses in the corresponding Repository.
             //'productLabel' => $this->product->getLabel(),
             'quantityOrdered' => $this->getQuantityOrdered(),
-            'quantityPacked' => $this->getQuantityPacked(),
+            'quantityToPack' => $this->getQuantityToPack(),
         ];
     }
 }

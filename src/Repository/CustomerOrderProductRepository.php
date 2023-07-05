@@ -4,6 +4,7 @@ namespace DMarti\ExamplesSymfony5\Repository;
 
 use DMarti\ExamplesSymfony5\Entity\CustomerOrderProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,5 +38,11 @@ class CustomerOrderProductRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public static function criteriaNotPacked(): Criteria
+    {
+        return Criteria::create()
+            ->andWhere(Criteria::expr()->gt('quantityToPack', 0));
     }
 }

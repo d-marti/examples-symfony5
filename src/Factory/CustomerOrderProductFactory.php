@@ -52,7 +52,7 @@ final class CustomerOrderProductFactory extends ModelFactory
             'customerOrder' => CustomerOrderFactory::new()->unfulfilled(),
             'product' => ProductFactory::new(),
             'quantityOrdered' => $quantityOrdered,
-            'quantityPacked' => self::faker()->numberBetween(0, $quantityOrdered),
+            'quantityToPack' => self::faker()->numberBetween(0, $quantityOrdered),
         ];
     }
 

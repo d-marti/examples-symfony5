@@ -634,3 +634,5 @@ When creating an entity you can set the type to "relation". This will create for
 You can also add them manually by following the examples found here, between `CustomerOrder`, `CustomerOrderProduct` and `Product` entities.
 
 In a first example I show how you can use "filter" with Collections to get only not packed products. But this is wasteful since Doctrine queries all results from customer order product matching the order ID, loops over them and then applies the filter. There is a way to instead query directly with a specific clause (for ex. `quantityPacked < quantityOrdered`>) using Criterias.
+
+You can create a Criteria anywhere, but seeing as you will be using entity properites with where clauses, it makes most sense to put them in the owning Entity's repository. Like that you can also reuse them. Then, instead of `filter` use `matching` on your `Collection` (available to `ArrayCollection` types).
