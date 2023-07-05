@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerOrderProductRepository::class)]
+#[ORM\UniqueConstraint(name: 'customer_order_id_product_id', columns: ['customer_order_id', 'product_id'])]
 class CustomerOrderProduct
 {
     #[ORM\Id]

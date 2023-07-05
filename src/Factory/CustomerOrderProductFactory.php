@@ -30,6 +30,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class CustomerOrderProductFactory extends ModelFactory
 {
+    private array $existingPairs = [];
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
@@ -38,6 +40,22 @@ final class CustomerOrderProductFactory extends ModelFactory
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function getUniqueCustomerOrderAndProductPair(array $customerOrders): array
+    {
+        do {
+            $customerOrder = $customerOrders[array_rand($customerOrders)];
+            $product = ProductFactory::random();
+            $uniqueKey = $customerOrder->getId() . '_' . $product->getId();
+        } while (isset($this->existingPairs[$uniqueKey]));
+
+        $this->existingPairs[$uniqueKey] = true;
+
+        return [
+            'customerOrder' => $customerOrder,
+            'product' => $product
+        ];
     }
 
     /**
