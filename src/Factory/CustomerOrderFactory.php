@@ -43,22 +43,18 @@ final class CustomerOrderFactory extends ModelFactory
 
     public function fulfilled(): self
     {
-        $this->addState([
+        return $this->addState([
             'statusFulfillment' => CustomerOrderStatusFulfillment::Packed,
             'fulfilledAt' => new DateTime(),
         ]);
-
-        return $this;
     }
 
     public function unfulfilled(): self
     {
-        $this->addState([
+        return $this->addState([
             'statusFulfillment' => CustomerOrderStatusFulfillment::Pending,
             'fulfilledAt' => null,
         ]);
-
-        return $this;
     }
 
     /**

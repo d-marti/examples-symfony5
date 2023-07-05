@@ -626,6 +626,8 @@ You will be able to create factories for entities with:
 symfony console make:factory
 ```
 
+For more info read the [Foundry docs](https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#using-in-your-tests).
+
 
 ### Doctrine Entity relations with Collections, using relations in Fixtures and Enum types
 
