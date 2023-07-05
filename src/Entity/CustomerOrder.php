@@ -2,7 +2,6 @@
 
 namespace DMarti\ExamplesSymfony5\Entity;
 
-use DateTime;
 use DateTimeImmutable;
 use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderProductRepository;
@@ -12,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CustomerOrderRepository::class)]
 class CustomerOrder
@@ -20,6 +20,7 @@ class CustomerOrder
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups('customerOrder:read')]
     // I've added unsinged here to give us more possible IDs.
     // You can add unsigned to any int columns but it's not needed,
     // especially when working with small status-like numbers.
@@ -27,9 +28,11 @@ class CustomerOrder
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 10, enumType: CustomerOrderStatusFulfillment::class)]
+    #[Groups('customerOrder:read')]
     private CustomerOrderStatusFulfillment $statusFulfillment = CustomerOrderStatusFulfillment::Pending;
 
     #[ORM\Column(nullable: true, type: Types::DATETIME_IMMUTABLE)]
+    #[Groups('customerOrder:read')]
     private ?DateTimeImmutable $fulfilledAt = null;
 
     #[ORM\OneToMany(
@@ -77,17 +80,6 @@ class CustomerOrder
         $this->fulfilledAt = $fulfilledAt;
 
         return $this;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'statusFulfillment' => $this->statusFulfillment,
-            'fulfilledAt' => ($this->fulfilledAt ? $this->fulfilledAt->format('Y-m-d H:i:s') : null),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
-        ];
     }
 
     /**

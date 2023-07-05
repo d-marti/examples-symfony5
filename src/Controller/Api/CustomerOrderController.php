@@ -27,12 +27,9 @@ class CustomerOrderController extends AbstractController
     {
         $customerOrders = $this->customerOrderRepository->findAll();
 
-        $orders = [];
-        foreach ($customerOrders as $order) {
-            $orders[] = $order->toArray(); // there are nicer ways of doing this, but that's in a future example
-        }
-
-        return $this->json($orders);
+        return $this->json($customerOrders, Response::HTTP_OK, [], [
+            'groups' => ['customerOrder:read']
+        ]);
     }
 
     #[Route('/api/customerOrders/{orderId<\d+>}', methods: ['GET'])]

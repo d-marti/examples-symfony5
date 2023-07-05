@@ -643,3 +643,13 @@ You can create a Criteria anywhere, but seeing as you will be using entity prope
 ### Doctrine advanced querying with DQL
 
 Doctrine uses DQL with its query builder. It's somewhat different from SQL, mainly that you query objects and not columns. You can `join` Entities directly with an object or with the primary key identifier. See `CustomerOrderProductRepository::findAllNotPackedByOrderId` for an example.
+
+
+## Serialize objects to JSON
+
+Install Serializer with:
+```shell
+composer require serializer
+```
+
+When using `$this->json()` to return a Response in our Controllers, it will automatically use Serializer to serialize any objects. Like this, you don't *have* to write "toArray" functions or implement any similar code. You can also take control of the more advanced features with annotations or attributes to specify what and how it gets serialized.
