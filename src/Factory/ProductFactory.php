@@ -47,7 +47,7 @@ final class ProductFactory extends ModelFactory
     {
         return [
             'isMedical' => self::faker()->boolean(20),
-            'label' => self::faker()->words(4, true),
+            'label' => self::faker()->words(self::faker()->numberBetween(3, 5), true),
             'weight' => self::faker()->randomFloat(2, 10, 100),
             'metricValue' => self::faker()->randomFloat(2, 10, 100),
             'metricType' => self::faker()->randomElement(ProductMetricType::cases()),

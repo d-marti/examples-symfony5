@@ -66,9 +66,10 @@ class CustomerOrderController extends AbstractController
     }
 
     #[Route('/api/customerOrders/{orderId<\d+>}/products/notPacked', methods: ['GET'])]
-    public function showAllNotPackedProducts(int $orderId): Response
+    public function showAllNotPackedProducts(int $orderId, Request $request): Response
     {
-        $products = $this->customerOrderProductRepository->findAllNotPackedByOrderId($orderId);
+        $multiple = $request->query->get('multiple', false);
+        $products = $this->customerOrderProductRepository->findAllNotPackedByOrderId($orderId, $multiple);
         $productsArray = [];
         foreach ($products as $product) {
             $productsArray[] = $product->toArray();

@@ -3,10 +3,9 @@
 namespace DMarti\ExamplesSymfony5\Repository;
 
 use DMarti\ExamplesSymfony5\Entity\CustomerOrderProduct;
-use DMarti\ExamplesSymfony5\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,7 +50,21 @@ class CustomerOrderProductRepository extends ServiceEntityRepository
     /**
      * @return CustomerOrderProduct[]
      */
-    public function findAllNotPackedByOrderId(int $orderId): array
+    public function findAllNotPackedByOrderId(int $orderId, bool $multipleQuantitiesOnly = false): array
+    {
+        $qb = $this->queryBuilderNotPackedProducts();
+        // you can also add filters with "ifs"
+        if ($multipleQuantitiesOnly) {
+            $qb->andWhere('orderProduct.quantityToPack > 1');
+        }
+        // usually you would pass the order object, but you can also pass it's primary key ID
+        return $qb->andWhere('orderProduct.customerOrder = :orderId')
+            ->setParameter('orderId', $orderId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function queryBuilderNotPackedProducts(): QueryBuilder
     {
         return $this->createQueryBuilder('orderProduct')
             ->addSelect('product')
@@ -59,10 +72,6 @@ class CustomerOrderProductRepository extends ServiceEntityRepository
                 'orderProduct.product',
                 'product'
             )
-            ->addCriteria(self::criteriaNotPacked())
-            // usually you would pass the order object, but you can also pass it's primary key ID
-            ->andWhere('orderProduct.customerOrder = :orderId')->setParameter('orderId', $orderId)
-            ->getQuery()
-            ->getResult();
+            ->addCriteria(self::criteriaNotPacked());
     }
 }
