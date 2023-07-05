@@ -2,6 +2,7 @@
 
 namespace DMarti\ExamplesSymfony5\Entity;
 
+use DMarti\ExamplesSymfony5\Constant\DbForeignKeyAction;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +12,7 @@ class CustomerOrderProduct
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(options: ['unsigned' => true])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -22,7 +23,9 @@ class CustomerOrderProduct
     private int $quantityPacked = 0;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
+    // It would have been nice if these DB keywords would be defined as constants in DBAL
+    // So I made one for foreign key actions: DbForeignKeyAction
+    #[ORM\JoinColumn(nullable: false, onDelete: DbForeignKeyAction::CASCADE)]
     private ?CustomerOrder $customerOrder = null;
 
     #[ORM\ManyToOne]
@@ -87,7 +90,11 @@ class CustomerOrderProduct
         return [
             'id' => $this->getId(),
             'productId' => $this->product->getId(),
-            'productLabel' => $this->product->getLabel(),
+            // The moment you try to get more details than just the ID (which we have in our table)
+            // an extra select query will be made. To avoid this, especially when getting multiple
+            // customer order products (see CustomerOrder::getProducts), write a function with JOIN
+            // clauses in the corresponding Repository.
+            //'productLabel' => $this->product->getLabel(),
             'quantityOrdered' => $this->getQuantityOrdered(),
             'quantityPacked' => $this->getQuantityPacked(),
         ];
