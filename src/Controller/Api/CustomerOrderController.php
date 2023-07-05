@@ -4,6 +4,7 @@ namespace DMarti\ExamplesSymfony5\Controller\Api;
 
 use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Entity\CustomerOrder;
+use DMarti\ExamplesSymfony5\Repository\CustomerOrderProductRepository;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -16,7 +17,8 @@ class CustomerOrderController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CustomerOrderRepository $customerOrderRepository
+        private CustomerOrderRepository $customerOrderRepository,
+        private CustomerOrderProductRepository $customerOrderProductRepository
     ) {
     }
 
@@ -38,7 +40,7 @@ class CustomerOrderController extends AbstractController
     {
         $customerOrder = $this->customerOrderRepository->find($orderId);
         if (null === $customerOrder) {
-            return $this->createNotFoundException();
+            throw $this->createNotFoundException();
         }
 
         $notPacked = $request->query->get('notPacked', false);
@@ -63,6 +65,18 @@ class CustomerOrderController extends AbstractController
         return $this->json($order);
     }
 
+    #[Route('/api/customerOrders/{orderId<\d+>}/products/notPacked', methods: ['GET'])]
+    public function showAllNotPackedProducts(int $orderId): Response
+    {
+        $products = $this->customerOrderProductRepository->findAllNotPackedByOrderId($orderId);
+        $productsArray = [];
+        foreach ($products as $product) {
+            $productsArray[] = $product->toArray();
+        }
+
+        return $this->json($productsArray);
+    }
+
     #[Route('/api/customerOrders/{orderId<\d+>}', methods: ['PUT'])]
     public function update(int $orderId, Request $request): Response
     {
@@ -78,7 +92,7 @@ class CustomerOrderController extends AbstractController
 
         $customerOrder = $this->customerOrderRepository->find($orderId);
         if (null === $customerOrder) {
-            return $this->createNotFoundException();
+            throw $this->createNotFoundException();
         }
 
         $customerOrder->setStatusFulfillment($status);

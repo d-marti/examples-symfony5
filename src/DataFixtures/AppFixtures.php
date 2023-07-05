@@ -14,15 +14,28 @@ class AppFixtures extends Fixture
     {
         $products = ProductFactory::createMany(20);
 
-        $customerOrders = CustomerOrderFactory::createMany(8);
-        // also create at least 2 fulfilled orders
-        $customerOrders += CustomerOrderFactory::new()->fulfilled()->many(2)->create();
-
+        $customerOrdersPending = CustomerOrderFactory::new()->pending()->many(5)->create();
         // create some customer order products associated with the orders and products we just created
-        CustomerOrderProductFactory::createMany(30, function () use ($customerOrders, $products) {
+        CustomerOrderProductFactory::createMany(25, function () use ($customerOrdersPending, $products) {
             return [
-                'customerOrder' => $customerOrders[array_rand($customerOrders)],
+                'customerOrder' => $customerOrdersPending[array_rand($customerOrdersPending)],
                 'product' => $products[array_rand($products)]
+            ];
+        });
+
+        $customerOrdersFulfilled = CustomerOrderFactory::new()->packed()->many(3)->create();
+        CustomerOrderProductFactory::createMany(15, function () use ($customerOrdersFulfilled, $products) {
+            return [
+                'customerOrder' => $customerOrdersFulfilled[array_rand($customerOrdersFulfilled)],
+                'product' => $products[array_rand($products)],
+            ];
+        });
+
+        $customerOrdersCancelled = CustomerOrderFactory::new()->cancelled()->many(2)->create();
+        CustomerOrderProductFactory::createMany(10, function () use ($customerOrdersCancelled, $products) {
+            return [
+                'customerOrder' => $customerOrdersCancelled[array_rand($customerOrdersCancelled)],
+                'product' => $products[array_rand($products)],
             ];
         });
 

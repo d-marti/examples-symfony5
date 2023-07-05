@@ -43,11 +43,6 @@ class CustomerOrderProduct
 
     public function setQuantityOrdered(int $quantityOrdered): static
     {
-        // only on creation, also set the quantity to pack
-        if (null === $this->quantityOrdered) {
-            $this->setQuantityToPack($quantityOrdered);
-        }
-
         $this->quantityOrdered = $quantityOrdered;
 
         return $this;
@@ -97,8 +92,8 @@ class CustomerOrderProduct
             // The moment you try to get more details than just the ID (which we have in our table)
             // an extra select query will be made. To avoid this, especially when getting multiple
             // customer order products (see CustomerOrder::getProducts), write a function with JOIN
-            // clauses in the corresponding Repository.
-            //'productLabel' => $this->product->getLabel(),
+            // clauses in the corresponding Repository. See: CustomerOrderProductRepository::findAllNotPackedByOrderId
+            'productLabel' => $this->product->getLabel(),
             'quantityOrdered' => $this->getQuantityOrdered(),
             'quantityToPack' => $this->getQuantityToPack(),
         ];

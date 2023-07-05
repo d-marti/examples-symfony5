@@ -2,6 +2,7 @@
 
 namespace DMarti\ExamplesSymfony5\Factory;
 
+use DMarti\ExamplesSymfony5\Constant\CustomerOrderStatusFulfillment;
 use DMarti\ExamplesSymfony5\Entity\CustomerOrderProduct;
 use DMarti\ExamplesSymfony5\Repository\CustomerOrderProductRepository;
 use Zenstruck\Foundry\ModelFactory;
@@ -44,15 +45,12 @@ final class CustomerOrderProductFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $quantityOrdered = self::faker()->numberBetween(1, 20);
-
         return [
             // These can be considered "default" values in case you don't pass them as arguments
             // when creating a CustomerOrderProductFactory object in your fixtures.
-            'customerOrder' => CustomerOrderFactory::new()->unfulfilled(),
+            'customerOrder' => CustomerOrderFactory::new()->pending(),
             'product' => ProductFactory::new(),
-            'quantityOrdered' => $quantityOrdered,
-            'quantityToPack' => self::faker()->numberBetween(0, $quantityOrdered),
+            'quantityOrdered' => self::faker()->numberBetween(1, 20),
         ];
     }
 
@@ -62,8 +60,20 @@ final class CustomerOrderProductFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this
-            // ->afterInstantiate(function(CustomerOrderProduct $CustomerOrderProduct): void {})
-        ;
+            ->afterInstantiate(function (CustomerOrderProduct $customerOrderProduct): void {
+                switch ($customerOrderProduct->getCustomerOrder()->getStatusFulfillment()) {
+                    case CustomerOrderStatusFulfillment::Packed:
+                        $customerOrderProduct->setQuantityToPack(0);
+                        break;
+                    case CustomerOrderStatusFulfillment::Pending:
+                        $customerOrderProduct->setQuantityToPack(
+                            self::faker()->numberBetween(0, $customerOrderProduct->getQuantityOrdered())
+                        );
+                        break;
+                    default:
+                        $customerOrderProduct->setQuantityToPack($customerOrderProduct->getQuantityOrdered());
+                }
+            });
     }
 
     protected static function getClass(): string

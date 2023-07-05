@@ -3,8 +3,10 @@
 namespace DMarti\ExamplesSymfony5\Repository;
 
 use DMarti\ExamplesSymfony5\Entity\CustomerOrderProduct;
+use DMarti\ExamplesSymfony5\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -44,5 +46,23 @@ class CustomerOrderProductRepository extends ServiceEntityRepository
     {
         return Criteria::create()
             ->andWhere(Criteria::expr()->gt('quantityToPack', 0));
+    }
+
+    /**
+     * @return CustomerOrderProduct[]
+     */
+    public function findAllNotPackedByOrderId(int $orderId): array
+    {
+        return $this->createQueryBuilder('orderProduct')
+            ->addSelect('product')
+            ->leftJoin(
+                'orderProduct.product',
+                'product'
+            )
+            ->addCriteria(self::criteriaNotPacked())
+            // usually you would pass the order object, but you can also pass it's primary key ID
+            ->andWhere('orderProduct.customerOrder = :orderId')->setParameter('orderId', $orderId)
+            ->getQuery()
+            ->getResult();
     }
 }

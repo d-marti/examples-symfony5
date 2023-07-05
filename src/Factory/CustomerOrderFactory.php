@@ -41,20 +41,19 @@ final class CustomerOrderFactory extends ModelFactory
         parent::__construct();
     }
 
-    public function fulfilled(): self
+    public function packed(): self
     {
-        return $this->addState([
-            'statusFulfillment' => CustomerOrderStatusFulfillment::Packed,
-            'fulfilledAt' => new DateTime(),
-        ]);
+        return $this->addState(['statusFulfillment' => CustomerOrderStatusFulfillment::Packed]);
     }
 
-    public function unfulfilled(): self
+    public function pending(): self
     {
-        return $this->addState([
-            'statusFulfillment' => CustomerOrderStatusFulfillment::Pending,
-            'fulfilledAt' => null,
-        ]);
+        return $this->addState(['statusFulfillment' => CustomerOrderStatusFulfillment::Pending]);
+    }
+
+    public function cancelled(): self
+    {
+        return $this->addState(['statusFulfillment' => CustomerOrderStatusFulfillment::Cancelled]);
     }
 
     /**
@@ -62,14 +61,9 @@ final class CustomerOrderFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $statusFulfillment = self::faker()->randomElement(CustomerOrderStatusFulfillment::cases());
-
         return [
+            'statusFulfillment' => self::faker()->randomElement(CustomerOrderStatusFulfillment::cases()),
             'createdAt' => self::faker()->dateTimeBetween('-30 days', '-10 days'),
-            'fulfilledAt' => ($statusFulfillment === CustomerOrderStatusFulfillment::Packed ?
-                self::faker()->dateTime() :
-                null),
-            'statusFulfillment' => $statusFulfillment,
             'updatedAt' => self::faker()->dateTimeBetween('-9 days', 'now'),
         ];
     }
@@ -80,8 +74,13 @@ final class CustomerOrderFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this
-            // ->afterInstantiate(function(CustomerOrder $customerOrder): void {})
-        ;
+            // ->beforeInstantiate(function (CustomerOrder $customerOrder): void {})
+            // ->afterPersist(function (CustomerOrder $customerOrder): void {})
+            ->afterInstantiate(function (CustomerOrder $customerOrder): void {
+                if (CustomerOrderStatusFulfillment::Packed === $customerOrder->getStatusFulfillment()) {
+                    $customerOrder->setFulfilledAt(self::faker()->dateTime());
+                }
+            });
     }
 
     protected static function getClass(): string
