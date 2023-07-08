@@ -82,6 +82,19 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "start": [
+            "docker-compose up -d",
+            "symfony server:start -d"
+        ],
+        "stop": [
+            "docker-compose down",
+            "symfony server:stop"
+        ],
+        "build": [
+            "yarn install",
+            "yarn build",
+            "symfony console doctrine:migrations:migrate -n"
+        ],
         "reset-dev-db": [
             "symfony console doctrine:database:drop --env=dev --force --if-exists",
             "symfony console doctrine:database:create --env=dev -n",
