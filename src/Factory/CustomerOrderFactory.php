@@ -76,12 +76,13 @@ final class CustomerOrderFactory extends ModelFactory
     {
         return $this
             // ->beforeInstantiate(function (CustomerOrder $customerOrder): void {})
-            // ->afterPersist(function (CustomerOrder $customerOrder): void {})
             ->afterInstantiate(function (CustomerOrder $customerOrder): void {
                 if (CustomerOrderStatusFulfillment::Packed === $customerOrder->getStatusFulfillment()) {
                     $customerOrder->setFulfilledAt(DateTimeImmutable::createFromMutable(self::faker()->dateTime()));
                 }
-            });
+            })
+            // ->afterPersist(function (CustomerOrder $customerOrder): void {})
+        ;
     }
 
     protected static function getClass(): string
